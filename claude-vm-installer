@@ -13,6 +13,7 @@ TMPL=$REPO_DIR/templates
 USER_NAME=${USER_NAME:-emrah}
 INSTALL_CYPRESS=${INSTALL_CYPRESS:-false}
 INSTALL_DENO=${INSTALL_DENO:-true}
+INSTALL_HELM=${INSTALL_HELM:-true}
 INSTALL_JAVA=${INSTALL_JAVA:-false}
 INSTALL_LUA=${INSTALL_LUA:-false}
 
@@ -224,6 +225,21 @@ if [[ "$INSTALL_DENO" = true ]] && [[ ! -x /usr/local/bin/deno ]]; then
         https://github.com/denoland/deno/releases/latest/download/deno-x86_64-unknown-linux-gnu.zip
     unzip -o /tmp/deno.zip -d /usr/local/bin/
     rm -f /tmp/deno.zip
+fi
+
+
+# -----------------------------------------------------------------------------
+# helm
+# -----------------------------------------------------------------------------
+if [[ "$INSTALL_HELM" = true ]]; then
+    out <<< "installing helm..."
+
+    wget -T 10 -qO /etc/apt/keyrings/helm.asc \
+        https://packages.buildkite.com/helm-linux/helm-debian/gpgkey
+    cp "$TMPL/etc/apt/sources.list.d/helm.sources" /etc/apt/sources.list.d/
+
+    apt-get update
+    apt-get-norec install helm
 fi
 
 
