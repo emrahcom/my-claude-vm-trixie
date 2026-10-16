@@ -145,7 +145,7 @@ git clone --depth 1 "$REPO_URL" "$REPO_DIR"
 # -----------------------------------------------------------------------------
 # user
 # -----------------------------------------------------------------------------
-out <<< "creating the user $USER_NAME if not exists..."
+out <<< "creating the user $USER_NAME if missing..."
 
 if ! id "$USER_NAME" &>/dev/null; then
     adduser --disabled-password --comment "" --shell /bin/zsh "$USER_NAME"
@@ -257,7 +257,7 @@ fi
 # -----------------------------------------------------------------------------
 # claude config
 # -----------------------------------------------------------------------------
-out <<< "adding claude config if not exists..."
+out <<< "adding claude config if missing..."
 
 su -l "$USER_NAME" -s /bin/bash -c "
     set -e
@@ -270,7 +270,7 @@ su -l "$USER_NAME" -s /bin/bash -c "
 # -----------------------------------------------------------------------------
 # dotfiles
 # -----------------------------------------------------------------------------
-out <<< "adding dotfiles if not exists..."
+out <<< "adding dotfiles if missing..."
 
 su -l "$USER_NAME" -s /bin/bash -c "
     set -e
@@ -283,7 +283,7 @@ su -l "$USER_NAME" -s /bin/bash -c "
 # -----------------------------------------------------------------------------
 # claude code
 # -----------------------------------------------------------------------------
-out <<< "installing claude code if not exists..."
+out <<< "installing claude code if missing..."
 
 if [[ ! -x "/home/$USER_NAME/.local/bin/claude" ]]; then
     su -l "$USER_NAME" -s /bin/bash -c \
