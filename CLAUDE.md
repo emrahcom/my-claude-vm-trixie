@@ -11,6 +11,9 @@ Rules for changing `claude-vm-installer`.
 - Config files live in `templates/`, mirroring their target path. User
   files go in `templates/home/user/` and are copied only if missing. No
   secrets and no user name in templates.
+- Rules that must always apply go in `templates/home/user/.claude/CLAUDE.md`.
+  Only a multi-step procedure that is needed now and then becomes a skill in
+  `templates/home/user/.claude/skills/<name>/SKILL.md`.
 - Optional tools get an `INSTALL_` flag in globals, overridable from the
   environment. Keep the flags in alphabetical order.
 - Avoid things that need regular maintenance, such as pinned key
