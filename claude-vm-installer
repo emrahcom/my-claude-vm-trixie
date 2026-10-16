@@ -9,6 +9,9 @@ REPO_DIR=/tmp/my-claude-vm-trixie
 TMPL=$REPO_DIR/templates
 USER_NAME=emrah
 
+# optional packages, e.g. INSTALL_JAVA=true bash claude-vm-installer
+INSTALL_JAVA=${INSTALL_JAVA:-false}
+
 
 # -----------------------------------------------------------------------------
 # output format
@@ -174,6 +177,16 @@ cp "$TMPL/etc/apt/sources.list.d/yarn.sources" /etc/apt/sources.list.d/
 
 apt-get update
 apt-get-norec install nodejs yarn
+
+
+# -----------------------------------------------------------------------------
+# java & maven
+# -----------------------------------------------------------------------------
+if [[ "$INSTALL_JAVA" = true ]]; then
+    out <<< "installing java and maven..."
+
+    apt-get-norec install openjdk-25-jdk maven
+fi
 
 
 # -----------------------------------------------------------------------------
