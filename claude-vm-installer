@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 # -----------------------------------------------------------------------------
 # globals
@@ -50,28 +50,11 @@ START_TIME=$(date +%s)
 # -----------------------------------------------------------------------------
 # environment check
 # -----------------------------------------------------------------------------
-clear
-
-# are you sure
-out <<EOF
-This script installs the Claude Code work environment.
-Use it only on a fresh Debian 13 Trixie VM.
-If you are sure then write YES (uppercase) and press enter to start!
-EOF
-
-read answer
-if [[ "$answer" != "YES" ]]; then
-    out <<EOF
-Aborted! not approved, typed: $answer
-EOF
-    exit 1
-fi
-
-# whoami
+# root
 out <<< "checking the user account..."
-if [[ "$(whoami)" != "root" ]]; then
+if [[ "$EUID" -ne 0 ]]; then
     out <<EOF
-Aborted! You are not the root user: $(whoami)
+Aborted! You are not the root user
 Recommendation: Use the following command to be the 'root' user
 
     su -l
@@ -91,17 +74,38 @@ EOF
     exit 1
 fi
 
+# are you sure
+out <<EOF
+This script installs or updates the Claude Code work environment.
+Use it only on a Debian 13 Trixie VM, not on your desktop machine.
+If you are sure then write YES (uppercase) and press enter to start!
+EOF
+
+read -r answer
+if [[ "$answer" != "YES" ]]; then
+    out <<EOF
+Aborted! not approved, typed: $answer
+EOF
+    exit 1
+fi
+
+
+# -----------------------------------------------------------------------------
+# packages (base)
+# -----------------------------------------------------------------------------
+out <<< "installing the base packages..."
+
+apt-get update
+apt-get -y install git
+
 
 # -----------------------------------------------------------------------------
 # repo
 # -----------------------------------------------------------------------------
 out <<< "cloning the repo..."
 
-apt-get update
-apt-get -y install git
-
-rm -rf $REPO_DIR
-git clone --depth 1 $REPO_URL $REPO_DIR
+rm -rf "$REPO_DIR"
+git clone --depth 1 "$REPO_URL" "$REPO_DIR"
 
 
 # -----------------------------------------------------------------------------
