@@ -6,6 +6,7 @@ set -euo pipefail
 # -----------------------------------------------------------------------------
 REPO_URL=https://github.com/emrahcom/my-claude-vm-trixie.git
 REPO_DIR=/tmp/my-claude-vm-trixie
+USER_NAME=emrah
 
 
 # -----------------------------------------------------------------------------
@@ -17,6 +18,18 @@ out() {
     while IFS= read -r line; do
         printf "\033[0;31m>>>\033[0m \033[0;33m%s\033[0m\n" "$line"
     done
+}
+
+
+# -----------------------------------------------------------------------------
+# apt
+# -----------------------------------------------------------------------------
+apt-get-norec() {
+    apt-get -y --no-install-recommends "$@"
+}
+
+apt-get-rec() {
+    apt-get -y --install-recommends "$@"
 }
 
 
@@ -93,10 +106,19 @@ fi
 # -----------------------------------------------------------------------------
 # packages (base)
 # -----------------------------------------------------------------------------
-out <<< "installing the base packages..."
+out <<< "upgrading the system..."
 
 apt-get update
-apt-get -y install git
+apt-get -y dist-upgrade
+apt-get -y autoremove --purge
+apt-get autoclean
+
+out <<< "installing the base packages..."
+
+apt-get-norec install zsh tmux vim autojump fzf
+apt-get-norec install git gnupg ca-certificates curl wget unzip
+apt-get-norec install ripgrep ack jq tree htop net-tools
+apt-get-norec install build-essential
 
 
 # -----------------------------------------------------------------------------
