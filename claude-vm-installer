@@ -12,6 +12,7 @@ TMPL=$REPO_DIR/templates
 #   USER_NAME=dev INSTALL_JAVA=true bash claude-vm-installer
 USER_NAME=${USER_NAME:-emrah}
 INSTALL_JAVA=${INSTALL_JAVA:-false}
+INSTALL_LUA=${INSTALL_LUA:-false}
 
 
 # -----------------------------------------------------------------------------
@@ -187,6 +188,16 @@ if [[ "$INSTALL_JAVA" = true ]]; then
     out <<< "installing java and maven..."
 
     apt-get-norec install openjdk-25-jdk maven
+fi
+
+
+# -----------------------------------------------------------------------------
+# lua
+# -----------------------------------------------------------------------------
+if [[ "$INSTALL_LUA" = true ]]; then
+    out <<< "installing lua..."
+
+    apt-get-norec install lua5.4 lua-basexx lua-check
 fi
 
 
