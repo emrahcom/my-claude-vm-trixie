@@ -13,6 +13,7 @@ TMPL=$REPO_DIR/templates
 USER_NAME=${USER_NAME:-emrah}
 INSTALL_JAVA=${INSTALL_JAVA:-false}
 INSTALL_LUA=${INSTALL_LUA:-false}
+INSTALL_CYPRESS=${INSTALL_CYPRESS:-false}
 
 
 # -----------------------------------------------------------------------------
@@ -198,6 +199,17 @@ if [[ "$INSTALL_LUA" = true ]]; then
     out <<< "installing lua..."
 
     apt-get-norec install lua5.4 lua-basexx lua-check
+fi
+
+
+# -----------------------------------------------------------------------------
+# cypress dependencies
+# -----------------------------------------------------------------------------
+if [[ "$INSTALL_CYPRESS" = true ]]; then
+    out <<< "installing cypress dependencies..."
+
+    apt-get-norec install libgtk-3-0t64 libgbm1 libnotify4 libnss3 libxss1 \
+        libasound2t64 libxtst6 xauth xvfb
 fi
 
 
