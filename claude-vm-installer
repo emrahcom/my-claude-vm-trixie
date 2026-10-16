@@ -168,6 +168,15 @@ usermod -aG docker "$USER_NAME"
 
 
 # -----------------------------------------------------------------------------
+# voice
+# -----------------------------------------------------------------------------
+out <<< "installing voice support..."
+
+apt-get-norec install alsa-utils
+usermod -aG audio "$USER_NAME"
+
+
+# -----------------------------------------------------------------------------
 # node & yarn
 # -----------------------------------------------------------------------------
 out <<< "installing node and yarn..."
@@ -244,17 +253,6 @@ fi
 
 
 # -----------------------------------------------------------------------------
-# claude code
-# -----------------------------------------------------------------------------
-out <<< "installing claude code if not exists..."
-
-if [[ ! -x "/home/$USER_NAME/.local/bin/claude" ]]; then
-    su -l "$USER_NAME" -s /bin/bash -c \
-        "set -o pipefail; curl -fsSL https://claude.ai/install.sh | bash"
-fi
-
-
-# -----------------------------------------------------------------------------
 # claude config
 # -----------------------------------------------------------------------------
 out <<< "adding claude config if not exists..."
@@ -281,12 +279,14 @@ su -l "$USER_NAME" -s /bin/bash -c "
 
 
 # -----------------------------------------------------------------------------
-# voice
+# claude code
 # -----------------------------------------------------------------------------
-out <<< "installing voice support..."
+out <<< "installing claude code if not exists..."
 
-apt-get-norec install alsa-utils
-usermod -aG audio "$USER_NAME"
+if [[ ! -x "/home/$USER_NAME/.local/bin/claude" ]]; then
+    su -l "$USER_NAME" -s /bin/bash -c \
+        "set -o pipefail; curl -fsSL https://claude.ai/install.sh | bash"
+fi
 
 
 # -----------------------------------------------------------------------------
