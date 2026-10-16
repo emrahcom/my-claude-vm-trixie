@@ -177,6 +177,17 @@ apt-get-norec install nodejs yarn
 
 
 # -----------------------------------------------------------------------------
+# claude code
+# -----------------------------------------------------------------------------
+out <<< "installing claude code if not exists..."
+
+if [[ ! -x "/home/$USER_NAME/.local/bin/claude" ]]; then
+    su -l "$USER_NAME" -s /bin/bash -c \
+        "set -o pipefail; curl -fsSL https://claude.ai/install.sh | bash"
+fi
+
+
+# -----------------------------------------------------------------------------
 # completed
 # -----------------------------------------------------------------------------
 END_TIME=$(date +%s)
