@@ -7,9 +7,10 @@ set -euo pipefail
 REPO_URL=https://github.com/emrahcom/my-claude-vm-trixie.git
 REPO_DIR=/tmp/my-claude-vm-trixie
 TMPL=$REPO_DIR/templates
-USER_NAME=emrah
 
-# optional packages, e.g. INSTALL_JAVA=true bash claude-vm-installer
+# can be overridden, e.g.
+#   USER_NAME=dev INSTALL_JAVA=true bash claude-vm-installer
+USER_NAME=${USER_NAME:-emrah}
 INSTALL_JAVA=${INSTALL_JAVA:-false}
 
 

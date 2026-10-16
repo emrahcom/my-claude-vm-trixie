@@ -45,6 +45,8 @@ These steps are needed once, after the first run.
 
 ### switch to the user account
 
+Use your `USER_NAME` if you set one for the installer.
+
 ```bash
 su -l emrah
 ```
