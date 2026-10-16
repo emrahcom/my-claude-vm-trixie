@@ -39,6 +39,48 @@ files from there.
 bash claude-vm-installer
 ```
 
+## After installation
+
+These steps are needed once, after the first run.
+
+### switch to the user account
+
+```bash
+su -l emrah
+```
+
+### SSH access
+
+Add your public SSH key to `~/.ssh/authorized_keys` if you connect to the VM
+over SSH.
+
+### secrets
+
+Add your private environment variables such as access tokens to `~/.zshrc`.
+They are not part of this repo.
+
+### Claude Code
+
+Start Claude Code and log in:
+
+```bash
+claude
+```
+
+### GitLab
+
+Log in to your GitLab with a read-only token (`read_api` and `read_repository`
+scopes):
+
+```bash
+glab auth login --hostname gitlab.yourdomain.com
+```
+
+### audio
+
+To use Claude Code voice input, add a sound device to the VM. See
+[Audio for a libvirt VM](docs/libvirt-audio.md).
+
 ## Docs
 
 - [Audio for a libvirt VM](docs/libvirt-audio.md): add a sound device to the
