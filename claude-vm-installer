@@ -58,9 +58,6 @@ EOF
     fi
 }
 
-COMPLETED=false
-trap on_exit EXIT
-
 
 # -----------------------------------------------------------------------------
 # environment
@@ -110,6 +107,11 @@ Aborted! not approved, typed: $answer
 EOF
     exit 1
 fi
+
+# the trap starts after the checks, so an abort above prints only its own
+# message
+COMPLETED=false
+trap on_exit EXIT
 
 
 # -----------------------------------------------------------------------------
