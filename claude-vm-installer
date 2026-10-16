@@ -1,0 +1,112 @@
+#!/bin/bash
+set -e
+
+# -----------------------------------------------------------------------------
+# globals
+# -----------------------------------------------------------------------------
+REPO_URL=https://github.com/emrahcom/my-claude-vm-trixie.git
+REPO_DIR=/tmp/my-claude-vm-trixie
+
+
+# -----------------------------------------------------------------------------
+# output format
+# -----------------------------------------------------------------------------
+out() {
+    printf "\n"
+
+    while IFS= read -r line; do
+        printf "\033[0;31m>>>\033[0m \033[0;33m%s\033[0m\n" "$line"
+    done
+}
+
+
+# -----------------------------------------------------------------------------
+# trap on exit
+# -----------------------------------------------------------------------------
+function on_exit {
+    if [[ "$COMPLETED" != true ]]; then
+        out <<< "Something went wrong. Not completed!"
+        exit 1
+    else
+        out <<EOF
+Installation Duration: $DURATION
+Completed successfully!
+EOF
+        exit 0
+    fi
+}
+
+COMPLETED=false
+trap on_exit EXIT
+
+
+# -----------------------------------------------------------------------------
+# environment
+# -----------------------------------------------------------------------------
+export DEBIAN_FRONTEND=noninteractive
+START_TIME=$(date +%s)
+
+
+# -----------------------------------------------------------------------------
+# environment check
+# -----------------------------------------------------------------------------
+clear
+
+# are you sure
+out <<EOF
+This script installs the Claude Code work environment.
+Use it only on a fresh Debian 13 Trixie VM.
+If you are sure then write YES (uppercase) and press enter to start!
+EOF
+
+read answer
+if [[ "$answer" != "YES" ]]; then
+    out <<EOF
+Aborted! not approved, typed: $answer
+EOF
+    exit 1
+fi
+
+# whoami
+out <<< "checking the user account..."
+if [[ "$(whoami)" != "root" ]]; then
+    out <<EOF
+Aborted! You are not the root user: $(whoami)
+Recommendation: Use the following command to be the 'root' user
+
+    su -l
+EOF
+    exit 1
+fi
+
+# distro
+out <<< "checking the distro..."
+DISTRO=$(grep VERSION_CODENAME /etc/os-release | cut -d= -f2)
+
+if [[ "$DISTRO" != "trixie" ]]; then
+    out <<EOF
+Aborted! Your distro is not supported: $DISTRO
+Recommendation: Use Debian 13 Trixie
+EOF
+    exit 1
+fi
+
+
+# -----------------------------------------------------------------------------
+# repo
+# -----------------------------------------------------------------------------
+out <<< "cloning the repo..."
+
+apt-get update
+apt-get -y install git
+
+rm -rf $REPO_DIR
+git clone --depth 1 $REPO_URL $REPO_DIR
+
+
+# -----------------------------------------------------------------------------
+# completed
+# -----------------------------------------------------------------------------
+END_TIME=$(date +%s)
+DURATION=$(date -u -d "0 $END_TIME seconds - $START_TIME seconds" +"%H:%M:%S")
+COMPLETED=true
