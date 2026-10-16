@@ -38,3 +38,8 @@ files from there.
 ```bash
 bash claude-vm-installer
 ```
+
+## Docs
+
+- [Audio for a libvirt VM](docs/libvirt-audio.md): add a sound device to the
+  VM for Claude Code voice input
