@@ -11,9 +11,10 @@ TMPL=$REPO_DIR/templates
 # can be overridden, e.g.
 #   USER_NAME=dev INSTALL_JAVA=true bash claude-vm-installer
 USER_NAME=${USER_NAME:-emrah}
+INSTALL_CYPRESS=${INSTALL_CYPRESS:-false}
+INSTALL_DENO=${INSTALL_DENO:-true}
 INSTALL_JAVA=${INSTALL_JAVA:-false}
 INSTALL_LUA=${INSTALL_LUA:-false}
-INSTALL_CYPRESS=${INSTALL_CYPRESS:-false}
 
 
 # -----------------------------------------------------------------------------
@@ -210,6 +211,19 @@ if [[ "$INSTALL_CYPRESS" = true ]]; then
 
     apt-get-norec install libgtk-3-0t64 libgbm1 libnotify4 libnss3 libxss1 \
         libasound2t64 libxtst6 xauth xvfb
+fi
+
+
+# -----------------------------------------------------------------------------
+# deno
+# -----------------------------------------------------------------------------
+if [[ "$INSTALL_DENO" = true ]] && [[ ! -x /usr/local/bin/deno ]]; then
+    out <<< "installing deno..."
+
+    wget -T 30 -qO /tmp/deno.zip \
+        https://github.com/denoland/deno/releases/latest/download/deno-x86_64-unknown-linux-gnu.zip
+    unzip -o /tmp/deno.zip -d /usr/local/bin/
+    rm -f /tmp/deno.zip
 fi
 
 
