@@ -126,7 +126,7 @@ out <<< "installing the base packages..."
 
 apt-get-norec install zsh tmux vim autojump fzf
 apt-get-norec install git gnupg ca-certificates curl wget unzip
-apt-get-norec install ripgrep ack jq tree htop net-tools
+apt-get-norec install ripgrep ack jq tree htop net-tools shellcheck
 apt-get-norec install build-essential
 apt-get-norec install glab
 
