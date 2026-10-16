@@ -188,6 +188,19 @@ fi
 
 
 # -----------------------------------------------------------------------------
+# claude config
+# -----------------------------------------------------------------------------
+out <<< "adding claude config if not exists..."
+
+su -l "$USER_NAME" -s /bin/bash -c "
+    set -e
+    mkdir -p ~/.claude
+    cp --update=none $TMPL/home/user/.claude/settings.json ~/.claude/
+    cp --update=none $TMPL/home/user/.claude/CLAUDE.md ~/.claude/
+"
+
+
+# -----------------------------------------------------------------------------
 # completed
 # -----------------------------------------------------------------------------
 END_TIME=$(date +%s)

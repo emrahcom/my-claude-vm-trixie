@@ -1,0 +1,12 @@
+{
+  "env": {
+    "CLAUDE_CODE_DISABLE_MOUSE": "1"
+  },
+  "tui": "fullscreen",
+  "theme": "auto",
+  "voiceEnabled": true,
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  }
+}
