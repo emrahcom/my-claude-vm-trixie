@@ -201,6 +201,19 @@ su -l "$USER_NAME" -s /bin/bash -c "
 
 
 # -----------------------------------------------------------------------------
+# dotfiles
+# -----------------------------------------------------------------------------
+out <<< "adding dotfiles if not exists..."
+
+su -l "$USER_NAME" -s /bin/bash -c "
+    set -e
+    cp --update=none $TMPL/home/user/.zshrc ~/
+    cp --update=none $TMPL/home/user/.vimrc ~/
+    cp --update=none $TMPL/home/user/.tmux.conf ~/
+"
+
+
+# -----------------------------------------------------------------------------
 # completed
 # -----------------------------------------------------------------------------
 END_TIME=$(date +%s)
