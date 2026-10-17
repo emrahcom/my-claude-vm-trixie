@@ -1,4 +1,4 @@
-# my-claude-vm-trixie
+# My Claude VM (Trixie)
 
 `claude-vm-installer` creates a Claude Code work environment on a basic Debian
 13 Trixie VM.
