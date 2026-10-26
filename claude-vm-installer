@@ -11,6 +11,7 @@ TMPL=$REPO_DIR/templates
 # can be overridden, e.g.
 #   USER_NAME=dev INSTALL_JAVA=true bash claude-vm-installer
 USER_NAME=${USER_NAME:-emrah}
+INSTALL_BROWSER_LIBS=${INSTALL_BROWSER_LIBS:-false}
 INSTALL_CYPRESS=${INSTALL_CYPRESS:-false}
 INSTALL_DENO=${INSTALL_DENO:-true}
 INSTALL_HELM=${INSTALL_HELM:-true}
@@ -175,7 +176,8 @@ usermod -aG docker "$USER_NAME"
 # -----------------------------------------------------------------------------
 out <<< "installing voice support..."
 
-apt-get-norec install alsa-utils
+# apulse: PulseAudio for Firefox on ALSA, without a sound server
+apt-get-norec install alsa-utils apulse
 usermod -aG audio "$USER_NAME"
 
 
@@ -224,6 +226,24 @@ if [[ "$INSTALL_CYPRESS" = true ]]; then
 
     apt-get-norec install libgtk-3-0t64 libgbm1 libnotify4 libnss3 libxss1 \
         libasound2t64 libxtst6 xauth xvfb
+fi
+
+
+# -----------------------------------------------------------------------------
+# browser libraries
+# -----------------------------------------------------------------------------
+# needed to run Chromium, Firefox and WebKit, e.g. for Playwright
+if [[ "$INSTALL_BROWSER_LIBS" = true ]]; then
+    out <<< "installing browser libraries..."
+
+    # chromium and firefox
+    apt-get-norec install libgtk-3-0t64 libgbm1 libnss3 libxss1 libxtst6 \
+        libasound2t64
+    # webkit
+    apt-get-norec install gstreamer1.0-libav gstreamer1.0-plugins-bad \
+        libavif16 libenchant-2-2 libevent-2.1-7t64 libgtk-4-1 \
+        libmanette-0.2-0 libnotify4 libopengl0 libsecret-1-0 libwebpdemux2 \
+        libwoff1
 fi
 
 
